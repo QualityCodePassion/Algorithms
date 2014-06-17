@@ -1,4 +1,8 @@
 import math
+# Need to add the following path to import the lib from a different directory
+import sys
+sys.path.insert(0, '../Lib/FileIO/')
+import FileArray
 
 # from C:\Users\t.hale\Dropbox\MyDocs\RTCMA\Training\Online Courses\Coursera\Stanford - Algorithms - Design and Analysis - Part 1\03 - Week 01\algo-inversions2_typed.pdf
 
@@ -38,12 +42,7 @@ def SortAndCount( input, length ):
 
 
 # Open the file and convert to a list of ints
-fo = open("IntegerArray.txt")
-print "Name of the file: ", fo.name
-lines = fo.readlines()
-unsortedList = [ int(lines) for lines in lines ]
-fo.close()
-
+unsortedList = FileArray.FileIntegerArray("IntegerArray.txt")
 sortedList, count = SortAndCount( unsortedList, len(unsortedList) )
 
 #print sortedList
