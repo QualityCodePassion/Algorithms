@@ -76,18 +76,21 @@ def partition( inArray, start, end ):
     partition(inArray, i, end)
 
 
-# Open the file and convert to a list of ints
-debug = False
-if( debug ):
-    unsortedList = FileArray.FileIntegerArray("../Data/DummyTextInput.txt")
-else:
-    unsortedList = FileArray.FileIntegerArray("C:/Users/t.hale/Dropbox/dev/GitHub/Datasets/Algorithms/QuickSort.txt")
+def main():
+    # Open the file and convert to a list of ints
+    debug = False
+    if( debug ):
+        unsortedList = FileArray.FileIntegerArray("../Data/DummyTextInput.txt")
+    else:
+        unsortedList = FileArray.FileIntegerArray("C:/Users/t.hale/Dropbox/dev/GitHub/Datasets/Algorithms/QuickSort.txt")
 
-partition(unsortedList, 0, (len(unsortedList)-1) )
-print "Count = ", runningcomparisoncount
+    partition(unsortedList, 0, (len(unsortedList)-1) )
+    print "Count = ", runningcomparisoncount
 
-if( debug ):
-    print "Sorted array = "
-    print unsortedList
+    if( debug ):
+        print "Sorted array = "
+        print unsortedList
 
 
+if __name__ == '__main__':
+    main()
