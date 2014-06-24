@@ -9,6 +9,8 @@
 # Licence:     <your licence>
 #-------------------------------------------------------------------------------
 
+import collections
+
 
 maxGraphSize = 100;
 
@@ -35,8 +37,9 @@ class EdgeList:
         self.edges.append( Edge(y,w))
 
 class Graph(object):
-    def __init__(self, maxSize):
+    def __init__(self, maxSize, directed = False):
         print "init graph with max size of ", maxSize
+        self.directed = directed
 
         # initialize the list (can't use the "*" opertor for this because it only does shallow
         # copies pointing to the same "EdgeList" object.
@@ -75,7 +78,7 @@ def ReadGraphFromFile( fileName, maxSize ):
 
 
 ###########################################################################################################
-# TODO put the following into it's own class then into the graph modules
+# TODO put the following DFS into it's own class then into the graph modules
 
 explored = [False]*maxGraphSize
 
@@ -92,11 +95,67 @@ def DFS( graph, start):
             DFS(graph,nextVertex)
             print "finished exploring vertex", nextVertex
 
+# end of DFS
+###########################################################################################################
+
+
+###########################################################################################################
+# TODO put the following BFS into it's own class then into the graph modules
+
+vertexQueue = collections.deque()
+discovered = [False]*maxGraphSize
+processed = [False]*maxGraphSize
+parent = [0]*maxGraphSize
+
+def ProcessVertexEarly( vertex ):
+    print("process vertex early: ", vertex)
+
+def ProcessVertexLate( vertex ):
+    #print("process vertex late: ", vertex)
+    pass
+
+def ProcessEdge( x, y ):
+    print("Process edge:", x , y)
+
+
+def BFS( graph, start ):
+    discovered[start] = True
+    print "starting at vertex", start
+    vertexQueue.append(start)
+
+    # pop each element off queue until it's empty
+    while( vertexQueue ):
+        vertex = vertexQueue.popleft()
+        ProcessVertexEarly( vertex )
+        processed[vertex] = True
+
+        # Get all the edges for this vertex and iterate over them all
+        edgeList = graph.vertices[vertex]
+        for edge in edgeList.edges:
+            nextVertex = edge.adjancentVertex
+
+            if ( (not processed[nextVertex]) or graph.directed):
+                ProcessEdge( vertex, nextVertex )
+
+            if( not discovered[nextVertex]):
+                discovered[nextVertex] = True
+                #put next vertex onto a queue
+                vertexQueue.append(nextVertex)
+                parent[nextVertex] = vertex
+
+        ProcessVertexLate(vertex)
+
+
+# end of BFS
+###########################################################################################################
+
 
 
 def main():
     graphFromFile = ReadGraphFromFile("../Data/DummyGraphEdges.txt", maxGraphSize)
-    DFS(graphFromFile, 1)
+    #DFS(graphFromFile, 1)
+
+    BFS(graphFromFile, 1)
 
     #testGraph = Graph(10)
     #testGraph.InsertEdge(1,7)
