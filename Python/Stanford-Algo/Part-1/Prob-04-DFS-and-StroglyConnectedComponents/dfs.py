@@ -11,7 +11,7 @@
 
 import collections
 
-# To import this module, you deed to add the following path to import the lib from a different directory
+# To import the graph module, you deed to add the following path to import the lib from a different directory
 import sys
 sys.path.insert(0, '../../../Lib/Graphs/')
 import Graphs

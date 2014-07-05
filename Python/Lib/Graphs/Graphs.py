@@ -15,6 +15,8 @@
 #sys.path.insert(0, '../Lib/Graphs/')
 #import Graphs
 
+###########################################################################################################
+# Standard graph (Can be weighted or not)
 
 class Edge:
     def __init__(self, y, w):
@@ -24,19 +26,23 @@ class Edge:
 class EdgeList:
     def __init__(self):
         self.edges = []
+        self.empty = True
 
     def InsertEdge(self, y, w):
+        #self.edges.add_task(y, w)
         self.edges.append( Edge(y,w))
+        self.empty = False
 
 class Graph(object):
-    def __init__(self, maxSize, directed = False):
-        print "init graph with max size of ", maxSize
+    def __init__(self, maxVertices, directed = False):
+        print "init graph with max size of ", maxVertices
         self.directed = directed
+        self.maxVertices = maxVertices
 
         # initialize the list (can't use the "*" opertor for this because it only does shallow
         # copies pointing to the same "EdgeList" object.
         self.vertices = []
-        for i in range(0, maxSize):
+        for i in range(0, maxVertices):
             self.vertices.append(EdgeList())
 
     def InsertEdge( self, x,y, directed = False, weight = 0 ):
@@ -45,7 +51,7 @@ class Graph(object):
         if( not directed ):
             self.InsertEdge( y, x, True, weight)
 
-# End of graph stuff
+# End of graph
 ###########################################################################################################
 
 
