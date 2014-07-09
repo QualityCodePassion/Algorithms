@@ -33,8 +33,9 @@ class PriorityQueue:
 
     def remove_task(self, task):
         'Mark an existing task as REMOVED.  Raise KeyError if not found.'
-        entry = self.entry_finder.pop(task)
-        entry[-1] = REMOVED
+        if( self.entry_finder.has_key(task) ):
+            entry = self.entry_finder.pop(task)
+            entry[-1] = REMOVED
 
     def pop_task(self):
         'Remove and return the lowest priority task, prioirty value and a flag to signal if empty.'

@@ -113,15 +113,14 @@ def Prims( graph, start ):
     # Initialize the heap (PriorityQueue) with the min edge of the first
     # vertex for its key, and ininity for all other keys (vertexs).
     heapQueue = PriorityQueue()
-#    for vertex in range(0, len(graph.vertices)):
-#        if( not (graph.vertices[vertex]).empty ):
-#            heapQueue.add_task(vertex, sys.maxint)
+    #for vertex in range(0, len(graph.vertices)):
+    #    if( not (graph.vertices[vertex]).empty ):
+    #        heapQueue.add_task(vertex, 35850023)    #sys.maxint)
 
     startEdges = (graph.vertices[start]).priorityEdges
     nextVertex, minWeight, noMoreValidEdges = startEdges.pop_task()
     heapQueue.add_task( (start, nextVertex), minWeight)
     totalCost = 0
-
 
     while( not noMoreValidEdges ):
 
@@ -132,7 +131,7 @@ def Prims( graph, start ):
             nextVertex = nextEdge[1]
             vertexInTreeGettingUpdate = nextEdge[0]
             if( not inTree[nextVertex] ):
-                print "Next vertex and weight = ", nextVertex, cheapestWeight
+                #print "Next vertex, weight, total = ", nextVertex, cheapestWeight, totalCost
                 totalCost += cheapestWeight
                 inTree[nextVertex] = True
                 spanningVertices.append(nextVertex)
@@ -148,7 +147,10 @@ def Prims( graph, start ):
                 # We keep popping the edges until we find one that's not already in the tree.
                 while( (not edgesEmpty) and (inTree[cheapestEdgeVertex])):
                     cheapestEdgeVertex, cheapestEdgeWeight, edgesEmpty = nextEdges.pop_task()
+                    #if( (not edgesEmpty) and (inTree[cheapestEdgeVertex])):
+                    #    print "edge discarded because already in tree = ", cheapestEdgeVertex, cheapestEdgeWeight
                 if( not edgesEmpty ):
+                    heapQueue.remove_task( (nextVertex, cheapestEdgeVertex) )
                     heapQueue.add_task((nextVertex, cheapestEdgeVertex), cheapestEdgeWeight)
 
                 nextEdges = (graph.vertices[vertexInTreeGettingUpdate]).priorityEdges
@@ -157,15 +159,19 @@ def Prims( graph, start ):
                 # We keep popping the edges until we find one that's not already in the tree.
                 while( (not edgesEmpty) and (inTree[cheapestEdgeVertex])):
                     cheapestEdgeVertex, cheapestEdgeWeight, edgesEmpty = nextEdges.pop_task()
+                    #if( (not edgesEmpty) and (inTree[cheapestEdgeVertex])):
+                    #    print "edge discarded because already in tree = ", cheapestEdgeVertex, cheapestEdgeWeight
                 if( not edgesEmpty ):
+                    heapQueue.remove_task( (vertexInTreeGettingUpdate, cheapestEdgeVertex) )
                     heapQueue.add_task( (vertexInTreeGettingUpdate, cheapestEdgeVertex), cheapestEdgeWeight)
 
     return totalCost
 
 
 def main():
-    #graphFromFile = ReadPriorityWeightedGraphFromFile("prims_edges.txt.bak")
-    graphFromFile = ReadPriorityWeightedGraphFromFile("test_prims_edges_02.txt")
+    graphFromFile = ReadPriorityWeightedGraphFromFile("prims_edges.txt.bak")
+    #graphFromFile = ReadPriorityWeightedGraphFromFile("test_prims_edges_02.txt")
+    #graphFromFile = ReadPriorityWeightedGraphFromFile("test_prims_edges_03.txt")
     start = 1
     totalCost = Prims(graphFromFile, start)
     print "Total Cost = ", totalCost
