@@ -36,7 +36,7 @@ def ReadValuesAndRatios( fileName ):
             edge = line.split()
             value = int(edge[0])
             weight = int(edge[1])
-            value_ratio = value/weight
+            value_ratio = float( float(value)/float(weight) )
             elements.append( (value_ratio, weight, value) )
 
     # TOTO sort by descending the ratio fist, but then ascending then weight.
