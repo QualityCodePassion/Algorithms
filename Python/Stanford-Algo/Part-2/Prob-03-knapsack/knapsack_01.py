@@ -33,6 +33,9 @@ def ReadValuesAndWeights( fileName ):
 def CalculateKnapsack( maxWeight, numberOfValues, elements ):
 
     # initialize the 2-D array with a list of lists
+
+    This doesn't produce the right answer, but I haven't had time to debug it yet
+
     A = []
     for i in range(numberOfValues + 1):
         column = [0]*(maxWeight + 1)
