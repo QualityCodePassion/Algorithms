@@ -1,12 +1,6 @@
 #-------------------------------------------------------------------------------
 # Name:        module1
-#
-# Purpose: Solves the knapsack problem
-# The "optimized_knapsack_02.py" algorithm found the correct answer by
-# filtering out all of the nodes that have a value to weight ratio less than
-# 0.5. I obtained this value by analysing and manually inspecting the values
-# being used for the computation. This will only work for this dataset, but
-# could probably be automated if needed for future datasets.
+# Purpose:
 #
 # Author:      t.hale
 #
