@@ -61,7 +61,7 @@ class BackTrackValues:
 
 
 
-def two_sat( clauseList, valuePositions, size ):
+def two_sat( filename, clauseList, valuePositions, size ):
     # pick the first value of the first clause
     firstClauseValue = clauseList[0][0]
 
@@ -98,6 +98,9 @@ def two_sat( clauseList, valuePositions, size ):
     singlesQueue = []   #collections.deque()
     listOfSolved =[(False, 0)]*len(clauseList)
     previousDepthCounter = depthCounter
+    stackSingleQueueAdjustment = 0
+    loopCounter = 0
+    finishedFirstHalf = False
 
     while branchQueue:
         # This is basically a DFS over all the possible branches
@@ -105,13 +108,39 @@ def two_sat( clauseList, valuePositions, size ):
         nextBranchValue = nextBranch[0]
         nextBranchDepth = nextBranch[1] + 1
 
+        if (nextBranchDepth == 1) and (loopCounter > 1):
+            finishedFirstHalf = True
+
+        loopCounter += 1
+        if (loopCounter % 10000) == 1:
+            print "loop counter, depth = ", loopCounter, nextBranchDepth, finishedFirstHalf, filename
+
         # If backtracking is required, then keep popping values of stack until
         # the depth of the stack matches the current depth of the next branch
         while nextBranchDepth < previousDepthCounter :
+            #print "Backtracking back to depth ", nextBranchDepth
             backtrackPop = backtrackStack.pop()
-            for popCounter in range(0, backtrackPop.backtrackSingleQueueCount):
-                singlesQueue.pop()
             backtrackValue = backtrackPop.value
+            popSingleQueueConut = backtrackPop.backtrackSingleQueueCount
+
+            # If the single queuee count is negative, a single value was popped without any being put on by that
+            # branch, so the other queue counts on the stack will need to be adjusted by this value when they
+            # get popped off the stack
+            if popSingleQueueConut < 0:
+                stackSingleQueueAdjustment += popSingleQueueConut
+            else:
+                currentSingleQueueCount = popSingleQueueConut
+                popSingleQueueConut += stackSingleQueueAdjustment
+                stackSingleQueueAdjustment += currentSingleQueueCount
+                if stackSingleQueueAdjustment > 0:
+                    stackSingleQueueAdjustment = 0
+                if popSingleQueueConut > 0:
+                    for popCounter in range(0, popSingleQueueConut):
+                        if singlesQueue:
+                            singlesQueue.pop()
+                        else:
+                            print "singlesQueue empty with  count = ", popSingleQueueConut
+
             previousDepthCounter = backtrackPop.depth
             for position in backtrackPop.single_postions_list:
                 listOfSingles[position] = 0
@@ -179,10 +208,11 @@ def two_sat( clauseList, valuePositions, size ):
 
         backtrackStack.append( BackTrackValues( nextBranchValue, nextBranchDepth, backtrackSolvedList, backtrackSingleList, backtrackSingleQueueCount ) )
 
-        nextSingleToProcess = popSingleStack[1]
         solved_counter = 0
 
-        if not singleFound:
+        if singleFound:
+            nextSingleToProcess = popSingleStack[1]
+        else:
             # if no single available, just get one of the other ones
             for i in range(0, len(clauseList) ):
                 if listOfSolved[i][0]:
@@ -193,9 +223,9 @@ def two_sat( clauseList, valuePositions, size ):
                     break
 
         if solved_counter >= len(clauseList) :
-            print "This has been solved! Values were: "
-            while backtrackStack:
-                print backtrackStack.pop().value
+            print "This has been solved! Filename was: ", filename
+            #while backtrackStack:
+            #    print backtrackStack.pop().value
             return
 
         #nextBranchDepth += 1
@@ -203,17 +233,24 @@ def two_sat( clauseList, valuePositions, size ):
         branchQueue.appendleft( (nextSingleToProcess, nextBranchDepth ) )
 
 
-    print "This is NOT solvable!!!"
+    print "This is NOT solvable!!! Filename was: ", filename
 
 
 
 
 
 def main():
-    #clauseList, valuePositions, size =  ReadValues("2sat_test_2.txt" )
-    clauseList, valuePositions, size =  ReadValues("2sat1.txt.bak" )
+    filename = "2sat3.txt"
+    #filename = "2sat5_reversed.txt.bak"
+    #filename = "2sat1.txt.bak"
+    #filename = "2sat_test_2.txt"
 
-    two_sat( clauseList, valuePositions, size )
+    #clauseList, valuePositions, size =  ReadValues("2sat_test_2.txt" )
+    #clauseList, valuePositions, size =  ReadValues("2sat1.txt.bak" )
+    clauseList, valuePositions, size =  ReadValues( filename )
+
+
+    two_sat( filename, clauseList, valuePositions, size )
 
 if __name__ == '__main__':
     main()
