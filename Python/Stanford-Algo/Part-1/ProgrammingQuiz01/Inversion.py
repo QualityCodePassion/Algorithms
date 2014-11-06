@@ -42,7 +42,9 @@ def SortAndCount( input, length ):
 
 
 # Open the file and convert to a list of ints
-unsortedList = FileArray.FileIntegerArray("IntegerArray.txt")
+#unsortedList = FileArray.FileIntegerArray("IntegerArray.txt.bak")
+unsortedList = FileArray.FileIntegerArray("TestIntegerArray.txt.bak")
+
 sortedList, count = SortAndCount( unsortedList, len(unsortedList) )
 
 #print sortedList
