@@ -45,5 +45,5 @@ pid_file
 *.iml
 *.xml
 *.fuse*
-*.txt
+
 
