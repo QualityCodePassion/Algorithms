@@ -41,3 +41,9 @@ pid_file
 .autotools
 .nfs*
 *.diff
+*.name
+*.iml
+*.xml
+*.fuse*
+*.txt
+

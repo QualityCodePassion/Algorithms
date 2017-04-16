@@ -25,7 +25,7 @@ maxGraphSize = 100;
 
 
 ###########################################################################################################
-# TODO put the following into the File modules
+# ReadGraphFromFile
 
 
 def ReadGraphFromFile( fileName, maxSize ):
